@@ -1,7 +1,7 @@
 \chapter{Założenia i zasada działania}
 \section{Założenia}
 \subsection{Pojazd}
-Projekt będzie tworzony przykładzie pojazdu Honda Civic VI z silnikiem D14A8 z roku 1998.
+Projekt będzie tworzony na przykładzie pojazdu Honda Civic VI z silnikiem D14A8 z roku 1998.
 
 \section{Zasada działania}
 \subsection{Potrzebne dane}
@@ -11,7 +11,7 @@ Do odczytania informacji potrzebnych do obliczenia aktualnego spalania potrzebuj
 \item{ilości wstrzykiwanego paliwa na jednostkę czasu}
 \end{itemize}
 
-\subsection{Obliczanie aktualnej prędkości pojazdu}
+\subsection{Obliczanie aktualnej prędkości pojazdu} \label{calc_speed}
 Do tego celu potrzebny będzie sygnał, który wysyła VSS (Vehicle Speed Sensor) - jest to urządzenie, z którego korzysta wskaźnik prędkości na desce rozdzielczej. W ogólnym założeniu działa on tak, iż wysyła określoną ilość impulsów co określony dystans. W przypadku pojazdu, na którym budowany jest projekt jest to \textbf{4000 impulsów} co \textbf{jedną milę}.\\
 \\Jeżeli prędkość będziemy odświeżać co sekundę, oraz po odświeżeniu będziemy resetować ilość impulsów VSS to prędkość obliczymy z wzoru (zobacz równanie (\ref{eq:speed})).
 
@@ -29,7 +29,7 @@ W przypadku tego pojazdu wzór przedstawia się następująco (zobacz równanie 
 V[km/h] = \frac{1.609344[km]}{4000} 3600i
 \end{equation}
 
-\subsection{Obliczanie spalania}
+\subsection{Obliczanie spalania} \label{calc_consumption}
 Koncepcja obliczania spalania polega na mierzeniu czasu otwarcia wtrysku, czyli czasu, w którym paliwo jest wstrzykiwane do komory spalania silnika. Jeśli znamy stałą wtryskiwacza, czyli parametr mówiący jaka ilość paliwa jest wtryskiwana w danym okresie czasu, możemy obliczyć aktualne spalanie samochodu.\\
 Pojazd, na którym oparta jest ta praca posiada wtryski 190cc, co oznacza, że wtryskują one \textbf{190 ml paliwa na minutę}.
 
