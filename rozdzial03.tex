@@ -7,7 +7,7 @@ Moduł ten operuje na napięciu 5V, tak więc na każdym z portów wejścia/wyj�
 \subsubsection{Zasilanie}
 Rekomendowane wartości napięcia, aby zasilić sam moduł według specyfikacji producenta musi zawierać się w przedziale 7-12V. Aby spełnić te warunki układ zasilania został skonstruowany na bazie stabilizatora 9V 7809 oraz kondensatorów (rys.~\ref{fig:LM78XX}) Moduł nie został podłączony bezpośrednio do obwodu w samochodzie, ponieważ podczas pracy alternatora napięcie w układzie jest większe niż maksymalne wymagane przez Arduino (dochodzi do \textasciitilde14V).
 
-\begin{figure}[ht]
+\begin{figure}[!htb]
 \centering
 \includegraphics[width=0.7\linewidth]{Rysunki/78xx.jpg}
 \caption{Schemat podłączenia układu zasilania \cite{LM78XX}}
@@ -47,9 +47,14 @@ W tym wypadku, pomiary wykazały, że czujnik ten działa niczym potencjometr i 
 
 \subsection{Podłączenie woltomierza} \label{voltometer}
 
-Aby wyświetlić aktualne napięcie w układzie samochodu nie uszkadzając przy tym modułu (w układzie pojazdu panuje napięcie przewyższające 5V), zostanie użyty prosty obwód z dwoma rezystorami.
+Aby wyświetlić aktualne napięcie w układzie samochodu nie uszkadzając przy tym modułu (w układzie pojazdu panuje napięcie przewyższające 5V) zostanie użyty prosty obwód z dwoma rezystorami (rys.~\ref{fig:voltometer}). 
 
-% schemat dodać
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.7\linewidth]{Rysunki/voltometer_schemat.png}
+\caption{Schemat podłączenia układu woltomierza}
+\label{fig:voltometer}
+\end{figure}
 
 W ten sposób można modułem 5V mierzyć napięcie w zakresie 0-20V. Więcej informacji w kolejnym rozdziale.
 

@@ -29,7 +29,7 @@ Arduino Leonardo posiada 4 ustawienia przerwań \cite{ard_ref}
 \end{itemize}
 
 \subsubsection{Oparte na czasie}
-Oprócz przerwań opartych na stanach cyfrowych pinów potrzeba również przerwanie, które wykonuje się co określony czas, aby móc przetworzyć i wyświetlić informację. Arduino w swojej dokumentacji nie posiada informacji na temat takich przerwań, jednak jako, iż oparte jest ono na architekturze AVR, która takie przerwania posiada, zostaną one wykorzystane.\\
+Oprócz przerwań opartych na stanach cyfrowych pinów potrzeba również przerwanie, które wykonuje się co określony czas, aby móc przetworzyć i wyświetlić informację. Arduino w swojej dokumentacji nie posiada informacji na temat takich przerwań, jednak jako, iż oparte jest ono na architekturze AVR, która takie przerwania posiada, zostaną one wykorzystane \cite{atmega_datasheet}.\\
 Zostało założone, że częstotliwość obliczania oraz wyświetlania informacji to 1 sekunda. W tym celu zostanie stworzone przerwanie, które będzie się opierać na dość dokładnym pomiarze czasu, który bazuje na ilości taktów procesora.\\
 
 \section{Implementacja}
@@ -350,7 +350,7 @@ void setup()
 
 \subsection{Czujnik temperatury}
 
-Aby skorzystać z cyfrowego czujnika temperatury działającego na interfejsie 1-Wire zostały dołączo e dwie biblioteki: \texttt{DallasTemperature.h} \cite{lib_dallas}, która odpowiada za odczyt i konfiguracje czujnika oraz \texttt{OneWire.h} \cite{lib_onewire}, dzięki której można korzytać z interfejsu 1-Wire.
+Aby skorzystać z cyfrowego czujnika temperatury działającego na interfejsie 1-Wire zostały dołączone dwie biblioteki: \texttt{DallasTemperature.h} \cite{lib_dallas}, która odpowiada za odczyt i konfiguracje czujnika oraz \texttt{OneWire.h} \cite{lib_onewire}, dzięki której można korzytać z interfejsu 1-Wire.
 
 \begin{lstlisting}[label=list:d18s20_setup,caption=Inicjalizacja czujnika i odczyt temperatury,
 basicstyle=\footnotesize\ttfamily]
