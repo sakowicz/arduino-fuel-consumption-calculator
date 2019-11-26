@@ -1,19 +1,27 @@
 \chapter{Założenia i zasada działania}
-\section{Założenia}
-\subsection{Pojazd}
-Projekt będzie tworzony na przykładzie pojazdu Honda Civic VI z silnikiem D14A8 z roku 1998.
+W tym rozdziale zostały opisane założenia oraz matematyczne aspekty projektu. Zilustrowano główne wzory na których bazuje projekt.
+Cały projekt będzie budowany z użyciem samochodu Honda Civic VI z silnikiem D14A8 z roku 1998, jednak wartości zmieniając stałe wartości można go dostosować, aby działał z innymi pojazdami.
 
-\section{Zasada działania}
-\subsection{Potrzebne dane}
-Do odczytania informacji potrzebnych do obliczenia aktualnego spalania potrzebujemy dwóch głównych informacji:
+\section{Diagram przypadków użycia}
+Na rys.~\ref{fig:diagram} przedstawiono diagram przypadków użycia.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1\linewidth]{Rysunki/diagram.png}
+\caption{Diagram przypadków użycia}
+\label{fig:diagram}
+\end{figure}
+
+\section{Obliczenia}
+\par Do odczytania informacji potrzebnych do obliczenia aktualnego spalania potrzeba dwóch głównych informacji:
 \begin{itemize}
 \item{aktualnej prędkości pojazdu}
 \item{ilości wstrzykiwanego paliwa na jednostkę czasu}
 \end{itemize}
 
-\subsection{Obliczanie aktualnej prędkości pojazdu} \label{calc_speed}
-Do tego celu potrzebny będzie sygnał, który wysyła VSS (Vehicle Speed Sensor) - jest to urządzenie, z którego korzysta wskaźnik prędkości na desce rozdzielczej. W ogólnym założeniu działa on tak, iż wysyła określoną ilość impulsów co określony dystans. W przypadku pojazdu, na którym budowany jest projekt jest to \textbf{4000 impulsów} co \textbf{jedną milę}.\\
-\\Jeżeli prędkość będziemy odświeżać co sekundę, oraz po odświeżeniu będziemy resetować ilość impulsów VSS to prędkość obliczymy z wzoru (zobacz równanie (\ref{eq:speed})).
+\subsubsection{Obliczanie aktualnej prędkości pojazdu} \label{calc_speed}
+Do tego celu potrzebny będzie sygnał, który wysyła VSS (Vehicle Speed Sensor) - jest to urządzenie, z którego korzysta wskaźnik prędkości na desce rozdzielczej. W ogólnym założeniu działa on tak, iż wysyła określoną ilość impulsów co określony dystans. W przypadku pojazdu, na którym budowany jest projekt jest to \textbf{4000 impulsów} co \textbf{jedną milę}.
+\par Korzystając z podstawowego wzoru na prędkość \cite{fizyka}, można dojść do wniosku, iż jeżeli prędkość będzie odświeżana co sekundę oraz po odświeżeniu będzie resetowana lość impulsów VSS to prędkość obliczona zostanie z wzoru (zobacz równanie (\ref{eq:speed})).
 
 \begin{equation}\label{eq:speed}
 V[km/h] = \frac{S[km]}{I} 3600 i
@@ -29,12 +37,12 @@ W przypadku tego pojazdu wzór przedstawia się następująco (zobacz równanie 
 V[km/h] = \frac{1.609344[km]}{4000} 3600i
 \end{equation}
 
-\subsection{Obliczanie spalania} \label{calc_consumption}
-Koncepcja obliczania spalania polega na mierzeniu czasu otwarcia wtrysku, czyli czasu, w którym paliwo jest wstrzykiwane do komory spalania silnika. Jeśli znamy stałą wtryskiwacza, czyli parametr mówiący jaka ilość paliwa jest wtryskiwana w danym okresie czasu, możemy obliczyć aktualne spalanie samochodu.\\
+\subsubsection{Obliczanie spalania} \label{calc_consumption}
+Koncepcja obliczania spalania polega na mierzeniu czasu otwarcia wtrysku, czyli czasu, w którym paliwo jest wstrzykiwane do komory spalania silnika. Jeśli znana jest stała wtryskiwacza, czyli parametr mówiący jaka ilość paliwa jest wtryskiwana w danym okresie czasu, można obliczyć aktualne spalanie samochodu.\\
 Pojazd, na którym oparta jest ta praca posiada wtryski 190cc, co oznacza, że wtryskują one \textbf{190 ml paliwa na minutę}.
 
 \subsubsection{Obliczanie spalania na godzinę}
-W tym wypadku również, jak w przypadku prędkości, co jedną sekundę sprawdzamy, przez jaki czas wtrysk wstrzykiwał paliwo. Mając już tę informację spalanie na godzinę wyliczamy ze wzoru(\ref{eq:consumptionPerHour}))
+W tym wypadku również, jak w przypadku prędkości, co jedną zostaje sprawdzone, przez jaki czas wtrysk wstrzykiwał paliwo. Mając już tę informację spalanie na godzinę zostaje wyliczone ze wzoru(\ref{eq:consumptionPerHour}))
 
 \begin{equation}\label{eq:consumptionPerHour}
 C_{h}[L/h] = N\frac{I[ml]}{60}\frac{i[\mu s]}{1000000}\frac{3600}{1000}
@@ -45,8 +53,8 @@ gdzie:
 \item[I] to stała wtrysku
 \item[i] to czas otwarcia wtrysku w danej sekundzie
 \end{description}
-Należałoby tutaj zaznaczyć, iż w tym projekcie pobierana jest informacja tylko z jednego wtrysku. Każdy wtrysk wstrzykuje za każdym razem tyle samo paliwa, więc ewentualny błąd przybliżenia do N wtrysków jest pomijalny.
-\subsubsection{Obliczanie aktualnego spalania na 100 km}
+\par Należy tutaj zaznaczyć, iż w projekcie pobierana jest informacja tylko z jednego wtrysku. Każdy wtrysk wstrzykuje za każdym razem tyle samo paliwa, więc ewentualny błąd przybliżenia do N wtrysków jest pomijalny.
+\subsubsection{Obliczanie spalania na 100 km}
 Bardziej przydatnym, z perspektywy odbiorcy, formatem aktualnego spalania jest spalanie zależne od aktualnej prędkości, czyli spalanie na 100 kilometrów. Zostaje ono obliczone ze wzoru (\ref{eq:consumptionPer100}))
 
 \begin{equation}\label{eq:consumptionPer100}

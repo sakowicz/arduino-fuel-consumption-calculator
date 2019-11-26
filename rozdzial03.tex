@@ -1,7 +1,7 @@
 \chapter{Implementacja projektu}
+W poniższym rozdziale zawarto informacje dotyczące warstwy elektronicznej projektu. Opisane zostały m.in układ zasilania, podłączenie do pojazdu oraz komunikacja z zewnętrznymi modułami.
 \section{Moduł Arduino}
-W tym projekcie wykorzystany został moduł Arduino w wersji Leonardo oparty na mikrokontrolerze AVR Atmega32U4. Posiada on 20 cyfrowych pinów wejścia/wyjścia z czego 12 z nich można ustawić jako analogowe. Co ważne dla tego projektu posiada on aż 5 pinów, które obsługują przerwania (więcej informacji w rozdziale 4.).
-\subsection{Napięcia i zasilanie}
+W projekcie wykorzystany został moduł Arduino w wersji Leonardo oparty na mikrokontrolerze AVR Atmega32U4. Posiada on 20 cyfrowych pinów wejścia/wyjścia z czego 12 z nich można ustawić jako analogowe. Co ważne dla projektu posiada on aż 5 pinów, które obsługują przerwania (więcej informacji w rozdziale 4.).
 \subsubsection{Napięcia}
 Moduł ten operuje na napięciu 5V, tak więc na każdym z portów wejścia/wyjścia nie może pojawić się większe napięcie, ponieważ grozi to uszkodzeniem układu. W przypadku samochodu, którego głównym napięciem jest napięcie z akumulatora \textasciitilde12V, trzeba zastosować elementy elektroniczne obniżające napięcie.
 \subsubsection{Zasilanie}
@@ -14,9 +14,19 @@ Rekomendowane wartości napięcia, aby zasilić sam moduł według specyfikacji 
 \label{fig:LM78XX}
 \end{figure}
 
+\subsubsection{Montaż}
+\par Jak pokazano na rys.~\ref{fig:arduino_schowek} mikrokontroler znajduje w schowku przed fotelem pasażera.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.8\linewidth]{Rysunki/arduino_schowek.jpg}
+\caption{Mikrokontroler w schowku}
+\label{fig:arduino_schowek}
+\end{figure}
+
 \section{Podłączenie do pojazdu}
-\subsection{Komputer pokładowy}
-Aby możliwy był odczyt wymaganych parametrów do poprawnego działania projektu, potrzebna jest wiedza na temat schematu podłączeń komputera pokładowego (ECU) umieszczonego w samochodzie. Jak się okazało, ze schematu portów wejścia/wyjścia\cite{HondaPinout}, wszystkie potrzebne sygnały są wpięte do ECU. Sygnały te zostały opisane w tabeli~\ref{tab:ecu_pinout}
+\subsubsection{Komputer pokładowy}
+Do odczytu wymaganych parametrów potrzebnych do poprawnego działania projektu, potrzebna jest wiedza na temat schematu podłączeń komputera pokładowego (ECU) umieszczonego w samochodzie. Jak się okazało, ze schematu portów wejścia/wyjścia\cite{HondaPinout}, wszystkie potrzebne sygnały są wpięte do ECU. Sygnały te zostały opisane w tabeli~\ref{tab:ecu_pinout}
 
 \begin{table}[htb] \small
 \centering
@@ -34,20 +44,20 @@ TPS & Przewód czujnika położenia pedału gazu & D & 11 & jasny zielony\\
 \end{tabularx}
 \end{table}
 
-Aby podpiąć się do wyżej wymienionych przewodów zostały użyte bezinwazyjne szybkozłączki. 
+W celu podpięcia się do wyżej wymienionych przewodów zostały użyte bezinwazyjne szybkozłączki. 
 
-\subsection{Czujnik prędkości} \label{vss}
+\subsubsection{Czujnik prędkości} \label{vss}
 Po pomiarach multimetrem okazało się, że impulsy w VSS mają dokładnie 5V, co oznacza, że nie potrzeba zastosowywać żadnych elementów elektronicznych, aby podłączyć się do modułu. Połączenie zostało więc stworzone bezpośrednio do pinu 7 obsługującego przerwanie 4.
 
-\subsection{Sygnał wtrysku} \label{inj}
+\subsubsection{Sygnał wtrysku} \label{inj}
 Pomiary wykazały, iż wtryski pracują na napięciu 12V. W przypadku, gdy wtrysk nie wstrzykuje paliwa sygnał ma napięcie 12V, gdy pracuje jest to wartość poniżej 3V. W tej sytuacji trzeba zastosować element zmniejszający napięcie. W tym celu został wybrany stabilizator 7805. Dodatkowe kondensatory nie zostały użyte jak w przypadku układu zasilania Arduino, ponieważ mogłyby one wpływać na dokładność pomiarów. Przewód ze zmniejszonym już napięciem został podpięty do pinu 2 obsługującego przerwanie 1.
 
-\subsection{Czujnik położenia pedału gazu}
+\subsubsection{Czujnik położenia pedału gazu}
 W tym wypadku, pomiary wykazały, że czujnik ten działa niczym potencjometr i zmienia napięcie od \textasciitilde0.5V dla pedału nie wciśniętego wcale, do \textasciitilde4.5V gdy pedał jest wciśnięty w 100\%. Wyprowadzenie te zostało podłączone do analogowego pinu A0.
 
-\subsection{Podłączenie woltomierza} \label{voltometer}
+\subsubsection{Podłączenie woltomierza} \label{voltometer}
 
-Aby wyświetlić aktualne napięcie w układzie samochodu nie uszkadzając przy tym modułu (w układzie pojazdu panuje napięcie przewyższające 5V) zostanie użyty prosty obwód z dwoma rezystorami (rys.~\ref{fig:voltometer}). 
+W celu wyświetlenia aktualnego napięcia w układzie samochodu nie uszkadzając przy tym modułu (w układzie pojazdu panuje napięcie przewyższające 5V) zostanie użyty prosty obwód z dwoma rezystorami (rys.~\ref{fig:voltometer}). 
 
 \begin{figure}[!htb]
 \centering
@@ -60,15 +70,19 @@ W ten sposób można modułem 5V mierzyć napięcie w zakresie 0-20V. Więcej in
 
 \section{Podłączenie akcesoriów}
 
-\subsection{Mikro przełącznik}
-Aby umożliwić użytkownikowi końcowemu sterowanie trybami pracy modułu został podłączony również mikro przełącznik. Został on przyłączony do pinu 13.
+\subsubsection{Mikro przełącznik}
+W celu umożliwienia użytkownikowi końcowemu sterowanie trybami pracy modułu został podłączony również mikro przełącznik. Został on przyłączony do pinu 13.
 
-\subsection{Wyświetlacz LCD}
+\subsubsection{Czujnik temperatury}
+Dodatkową funkcją modułu będzie wyświetlanie aktualnej zewnętrznej temperatury. W tym celu został użyty cyfrowy czujnik temperatury DS18B20 w wersji wodoodpornej, 3 metrowej sondy. Czujnik ten umożliwia komunikację po interfejsie 1-Wire, dzięki któremu wystarczy tylko jedna linia, aby komunikować się z czujnikiem (więcej informacji w kolejnym rozdziale). W celu skorzystania z interfejsu 1-Wire potrzebny jest rezystor 4,7 k\textOmega, aby podciągnąć go do zasilania.
+
+\subsubsection{Wyświetlacz LCD}
 Wyświetlacz jaki został wybrany do projektu to znany model LCD z 2x16 znakami o symbolu JHD162A-B-W zgodny ze sterownikiem HD44780. Został on połączony z Arduino poprzez cyfrowe piny: 12, 11, 6, 5, 4, 3. Dodatkowo został dołączony potencjometr do regulacji kontrastu wyświetlacza oraz zostało użyte dodatkowe połączenie służące do sterowania podświetleniem wyświetlacza - pin 9.
 
-% schemat
-
-\subsection{Czujnik temperatury}
-Dodatkową funkcją modułu będzie wyświetlanie aktualnej zewnętrznej temperatury. W tym celu został użyty cyfrowy czujnik temperatury DS18B20 w wersji wodoodpornej, 3 metrowej sondy. Czujnik ten umożliwia komunikację po interfejsie 1-Wire, dzięki któremu wystarczy tylko jedna linia, aby komunikować się z czujnikiem (więcej informacji w kolejnym rozdziale).\\
-Aby skorzystać z interfejsu 1-Wire potrzeba użyć rezystora 4,7 kΩ, aby podciągnąć go do zasilania.
-
+\par Wyświetlacz wraz z mikroprzełącznikiem został osadzony przy kierownicy (rys.~\ref{fig:arduino_lcd}).
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.8\linewidth]{Rysunki/arduino_lcd.jpg}
+\caption{Miejsce osadzenia wyświetlacza}
+\label{fig:arduino_lcd}
+\end{figure}

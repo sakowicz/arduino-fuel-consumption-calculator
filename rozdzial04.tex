@@ -1,22 +1,33 @@
 \chapter{Programowanie i konfiguracja modułu}
-\section{Wprowadzenie}
-\subsection{Środowisko programistyczne}
+W tym rozdziale opisane zostały programistyczne aspekty projektu takie jak wybór środowiska oraz języka programowania, nazewnictwo zmiennych, wyjaśniona została koncepcja programowania mikrokontrolera Arduino jak i opisane zostały przerwania. W dalszej części rozdziału pokazane zostały konkretne implementacje kodowe obsługi poszczególnych modułów wraz z listingami kodu.
 
-Domyślnym środowiskiem programistycznym (IDE) jakie udostępnia Arduino jest Arduino IDE i to właśnie w nim tworzony oraz kompilowany będzie kod źródłowy mikrokontrolera.
+\section{Schemat logiczny}
+Na rys.~\ref{fig:schemat} przedstawiono logiczny schemat działania systemu.
 
-\subsection{Przyjęte nazewnictwo podczas pisania kodu}
-W obrębie tego projektu zostało postanowione, że nazwy zmiennych będą zapisywane w języku polskim. Zwykłe zmienne będą nazywane w konwencji \texttt{snake\_case} a nazwy funkcji w \texttt{camelCase}. Dodatkowo wprowadzono znacznik ---, który oznacza, że w tym miejscu znajduje się jakiś kod, jednak jest on pominięty w listingu, ponieważ nie wnosi nic do aktualnego przykładu.
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.7\linewidth]{Rysunki/schemat_logiczny.png}
+\caption{Schemat logiczny systemu}
+\label{fig:schemat}
+\end{figure}
 
-\subsection{Koncepcja programowania modułu Arduino}
+\section{Środowisko programistyczne}
+
+Domyślnym środowiskiem programistycznym (IDE) jakie udostępnia Arduino jest \texttt{Arduino} IDE i to właśnie w nim tworzony oraz kompilowany będzie kod źródłowy mikrokontrolera. Wybór IDE argumentuję tym, iż posiada ono największe wsparcie ze strony producenta modułu oraz społeczności. Nie ma również zbyt wielu alternatyw. Językiem programowania jakie wpiera Arduino jest \texttt{C}, dlatego też został on użyty to zaprogramowania modułu.
+
+\subsubsection{Przyjęte nazewnictwo podczas pisania kodu}
+W obrębie projektu zostało postanowione, że nazwy zmiennych będą zapisywane w języku polskim. Zwykłe zmienne będą nazywane w konwencji \texttt{snake\_case} a nazwy funkcji w \texttt{camelCase}. Dodatkowo wprowadzono znacznik ---, który oznacza, że w tym miejscu znajduje się jakiś kod, jednak jest on pominięty w listingu, ponieważ nie wnosi nic do aktualnego przykładu.
+
+\subsubsection{Koncepcja programowania modułu Arduino}
 Strukturę kodu źródłowego można podzielić na dwie główne części: blok ustawień (setup) oraz główną pętle programu (loop).
 \begin{itemize}
 \item{sekcja, a w zasadzie funkcja \texttt{setup()} wykonuje się tylko raz i służy do ustawiania trybów pinów, inicjalizacji zmiennych, importowania bibliotek, ustawiania przerwań itp.}
 \item{główna funkcja programu, a konkretniej \texttt{loop()} jest pętlą, która z założenia wykonuje się w nieskończoność, więc to w niej będą wykonywać się obliczenia, wyświetlanie danych itp.}
 \end{itemize}
 
-\subsection{Przerwania}
+\section{Przerwania}
 \subsubsection{Sprzętowe}
-Jednym z najważniejszych zagadnień, bez których zbudowanie tego projektu byłoby znacznie utrudnione, są przerwania. Przerwania są to sygnały, które jak sama nazwa wskazuje powodują przerwanie wykonywania głównej pętli programu i wykonują zadane polecenia. W tym projekcie będą używane dwa przerwania: pierwsze służące do reagowania na sygnał z VSS oraz drugie, które będzie przesyłać informacje o włączeniu/wyłączeniu wtrysku.\\
+Jednym z najważniejszych zagadnień, bez których zbudowanie projektu byłoby znacznie utrudnione, są przerwania. Przerwania są to sygnały, które jak sama nazwa wskazuje powodują przerwanie wykonywania głównej pętli programu i wykonują zadane polecenia. W tym projekcie będą używane dwa przerwania: pierwsze służące do reagowania na sygnał z VSS oraz drugie, które będzie przesyłać informacje o włączeniu/wyłączeniu wtrysku.\\
 
 Piny przerwań są to cyfrowe piny wejściowe, które mogą mieć tylko dwa stany \texttt{LOW} lub \texttt{HIGH}\\
 
@@ -29,7 +40,7 @@ Arduino Leonardo posiada 4 ustawienia przerwań \cite{ard_ref}
 \end{itemize}
 
 \subsubsection{Oparte na czasie}
-Oprócz przerwań opartych na stanach cyfrowych pinów potrzeba również przerwanie, które wykonuje się co określony czas, aby móc przetworzyć i wyświetlić informację. Arduino w swojej dokumentacji nie posiada informacji na temat takich przerwań, jednak jako, iż oparte jest ono na architekturze AVR, która takie przerwania posiada, zostaną one wykorzystane \cite{atmega_datasheet}.\\
+Oprócz przerwań opartych na stanach cyfrowych pinów potrzebne jest również przerwanie, które wykonuje się co określony czas, aby móc przetworzyć i wyświetlić informację. Arduino w swojej dokumentacji nie posiada informacji na temat takich przerwań, jednak jako, iż oparte jest ono na architekturze AVR, która takie przerwania posiada, zostaną one wykorzystane \cite{atmega_datasheet}.\\
 Zostało założone, że częstotliwość obliczania oraz wyświetlania informacji to 1 sekunda. W tym celu zostanie stworzone przerwanie, które będzie się opierać na dość dokładnym pomiarze czasu, który bazuje na ilości taktów procesora.\\
 
 \section{Implementacja}
@@ -78,9 +89,9 @@ void setup()
 \subsection{Aktualna prędkość}
 \subsubsection{Konfiguracja przerwania}
 
-Aby obliczyć prędkość zostanie wykorzystane przerwanie typu FALLING, aby każdy z sygnałów został zliczony.
+W celu obliczenia prędkości zostało wykorzystane przerwanie typu FALLING, aby każdy z sygnałów został zliczony.
 
-Jak było przestawione w \ref{vss} sygnał od VSS jest podłączony do pinu 7, który obsługuje przerwanie 4.
+Jak zostało przestawione w \ref{vss} sygnał od VSS jest podłączony do pinu 7, który obsługuje przerwanie 4.
 
 \begin{lstlisting}[label=list:vss_int,caption=Ustawianie przerwania VSS,
 basicstyle=\footnotesize\ttfamily]
@@ -103,7 +114,7 @@ void setup()
 \end{lstlisting}
 \subsubsection{Obliczenia} \label{code_speed}
 
-Aby wyliczyć aktualną prędkość zostaną zastosowane obliczenia z \ref{calc_speed} oraz funkcja \texttt{coSekunde()} z \ref{setting_timer_interupt}.
+W celu wyliczenia aktualnej prędkości zostały zastosowane obliczenia z \ref{calc_speed} oraz funkcja \texttt{coSekunde()} z \ref{setting_timer_interupt}.
 
 \begin{lstlisting}[label=list:vss_int,caption=Wyliczanie aktualnej prędkości,
 basicstyle=\footnotesize\ttfamily]
@@ -122,9 +133,9 @@ void coSekunde()
 \subsection{Aktualne spalanie}
 \subsubsection{Konfiguracja przerwania}
 
-Aby obliczyć aktualne spalanie zostanie wykorzysane przerwanie typu \texttt{CHANGE}. W ten gdy pin zmieni swój stan zostanie mierzony czas otwarcia wtrysku w mikrosekundach
+W celu obliczenia aktualnego spalania zostało wykorzystane przerwanie typu \texttt{CHANGE}. W ten gdy pin zmieni swój stan zostanie mierzony czas otwarcia wtrysku w mikrosekundach
 
-Jak było przestawione w \ref{inj} sygnał od wtrysku jest podłączony do pinu 2, który obsługuje przerwanie 1.
+Jak zostało przestawione w \ref{inj} sygnał od wtrysku jest podłączony do pinu 2, który obsługuje przerwanie 1.
 
 \begin{lstlisting}[label=list:inj_int,caption=Ustawianie przerwania wtrysku,
 basicstyle=\footnotesize\ttfamily]
@@ -160,7 +171,7 @@ void setup()
 
 \subsubsection{Obliczenia}
 
-Aby wyliczyć aktualne spalanie zostaną zastosowane obliczenia z \ref{calc_consumption}, funkcja \texttt{coSekunde()} z \ref{setting_timer_interupt} oraz wyliczona już prędkość z poprzedniego podrozdziłu \ref{code_speed}.
+W celu wyliczenia aktualnego spalanie zostały zastosowane obliczenia z \ref{calc_consumption}, funkcja \texttt{coSekunde()} z \ref{setting_timer_interupt} oraz wyliczona już prędkość z poprzedniego podrozdziału \ref{code_speed}.
 
 \begin{lstlisting}[label=list:vss_int,caption=Obliczanie aktualnego spalania,
 basicstyle=\footnotesize\ttfamily]
@@ -244,7 +255,7 @@ float woltomierz()
 
 \subsubsection{Ustawianie trybu podciągającego}
 
-Aby przełącznik działał poprawnie należałoby użyć rezystora podciągającego, żeby uniknąć przypadków, że na wejściu będzie panował stan nieznany. Arduino Leonardo umożliwia ustawienie pinu w tryb \texttt{PULLUP}, dzięki czemu nie potrzeba dokładać kolejnego rezystora. 
+W celu poprawnego działania mikro przełącznika należy użyć rezystora podciągającego, żeby uniknąć przypadków, że na wejściu będzie panował stan nieznany. Arduino Leonardo umożliwia ustawienie pinu w tryb \texttt{PULLUP}, dzięki czemu nie potrzeba dokładać kolejnego rezystora. 
 \begin{lstlisting}[label=list:code_pullup,caption=Ustawianie pinu switcha w tryb PULLUP,
 basicstyle=\footnotesize\ttfamily]
 
@@ -259,9 +270,9 @@ void setup()
 \end{lstlisting}
 
 \subsubsection{Drgania mikro przełącznika}
-Większość mikro przełączników mechanicznych posiada problem z drganiami styków. W przypadku, gdy przycisk zostaje wciśnięty lub puszczony jego styki potrafią drgać powodując zmiane stanu wejściowego na pinie. Aby się przed tym zabezpieczyć została napisana funkcja, która po zmianie stanu na wejściu czeka określoną ilość czasu i sprawdza raz jeszcze stan przycisku w celu uniknięcia błędnego wykonywania kodu. Dla tego typu mikro przełączików przyjęło się, iż ten okres czasu wynosi 20 \mu s.\\
+Większość mikro przełączników mechanicznych posiada problem z drganiami styków. W przypadku, gdy przycisk zostaje wciśnięty lub puszczony jego styki potrafią drgać powodując zmianę stanu wejściowego na pinie. W celu zabezpieczenia się przed tym została napisana funkcja, która po zmianie stanu na wejściu czeka określoną ilość czasu i sprawdza raz jeszcze stan przycisku w celu uniknięcia błędnego wykonywania kodu. Dla tego typu mikro przełączników przyjęło się, iż ten okres czasu wynosi 20 \mu s.\\
 
-Aby polepszyć interakcję użytkowników z mikro kontrolerem zostały wprowadzone dwa tryby klikania w switch: zwykłe kliknięcie oraz przytrzymanie (min. 1 sekundę).
+W celu polepszenia interakcji użytkowników z mikro kontrolerem zostały wprowadzone dwa tryby klikania w switch: zwykłe kliknięcie oraz przytrzymanie (min. 1 sekundę).
 
 \begin{lstlisting}[label=list:code_switch,caption=Obsługa mikroprzełacznika,
 basicstyle=\footnotesize\ttfamily]
@@ -350,7 +361,7 @@ void setup()
 
 \subsection{Czujnik temperatury}
 
-Aby skorzystać z cyfrowego czujnika temperatury działającego na interfejsie 1-Wire zostały dołączone dwie biblioteki: \texttt{DallasTemperature.h} \cite{lib_dallas}, która odpowiada za odczyt i konfiguracje czujnika oraz \texttt{OneWire.h} \cite{lib_onewire}, dzięki której można korzytać z interfejsu 1-Wire.
+W celu skorzystania z cyfrowego czujnika temperatury działającego na interfejsie 1-Wire zostały dołączone dwie biblioteki: \texttt{DallasTemperature.h} \cite{lib_dallas}, która odpowiada za odczyt i konfiguracje czujnika oraz \texttt{OneWire.h} \cite{lib_onewire}, dzięki której można korzystać z interfejsu 1-Wire.
 
 \begin{lstlisting}[label=list:d18s20_setup,caption=Inicjalizacja czujnika i odczyt temperatury,
 basicstyle=\footnotesize\ttfamily]
@@ -381,7 +392,7 @@ float temperatura()
 
 \subsection{Pamięć nieulotna EEPROM}
 Pamięć EEPROM (ang. Electrucally-Erasable Programmable Read-Only Memory) jest to rodzaj pamięci nieulotnej. Można z niej odczytywać nieograniczoną ilość razy, jednak ilość zapisań/kasowań jest ograniczona. W przypadku Arduino w wersji Leonardo ograniczenie to wynosi 100000 cykli. Wielkość pamięci w tej wersji płytki wynosi 1 kB, przy czym jedna komórka pamięci może mieć wartość od 0 do 255 bitów.\\
-Aby móc zapisywać/odczytywać dane z EEPROM została użyta biblioteka \texttt{EEPROM.h} \cite{lib_eeprom}. Dostarcza ona m.in metody, które umożliwiają zapis tj. \texttt{EEPROM.write()} oraz odczyt tj. \texttt{EEPROM.read()}.
+W celu zapisywania/odczytywania danych z EEPROM została użyta biblioteka \texttt{EEPROM.h} \cite{lib_eeprom}. Dostarcza ona m.in metody, które umożliwiają zapis tj. \texttt{EEPROM.write()} oraz odczyt tj. \texttt{EEPROM.read()}.
 \subsubsection{Operacje na większych danych}
 W przypadku tego projektu dane, które są zapisywane to przejechany dystans oraz spalone paliwo. Aby móc zapisać i odczytać tak duże wartości zostały zaimplementowane funkcje \texttt{EEPROMZapiszLong()} oraz \texttt{EEPROMOdczytajLong()}, które umożliwiają zapis 32 bitowego typu \texttt{long} na czterech komórkach pamięci umożliwiających zapis 8 bitowych danych.
 
@@ -421,4 +432,4 @@ Zostało założone, iż ilość spalonego paliwa jest zapisywana od zerowej kom
 
 \subsubsection{Ograniczenia i optymalizacja}
 
-Jak zostało wspomniane wcześniej ilość zapisów do tej pamięci jest ograniczona. Aby wydłużyć jej żywotność została wprowadzona optymalizacja zapisu do pamięci. Zapis aktualnych danych jest wykonywany tylko, gdy samochód stoi (czyli prędkość pojazdu jest mniejsza niż 2 km/h) oraz gdy dystans od poprzedniego zapisu jest większy niż kilometr. Takie podejście znacznie zredukowało liczbę zapisów.
+Jak zostało wspomniane wcześniej ilość zapisów do tej pamięci jest ograniczona. W celu wydłużenia jej żywotności została wprowadzona optymalizacja zapisu do pamięci. Zapis aktualnych danych jest wykonywany tylko, gdy samochód stoi (czyli prędkość pojazdu jest mniejsza niż 2 km/h) oraz gdy dystans od poprzedniego zapisu jest większy niż kilometr. Takie podejście znacznie zredukowało liczbę zapisów.

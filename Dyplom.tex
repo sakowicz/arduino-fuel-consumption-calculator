@@ -103,13 +103,14 @@
 \linespread{1}
 %\linespread{1.241}
 \setlength{\parindent}{14.5pt}
-%\setbeforesecskip{10pt plus 0.5ex}%{-3.5ex \@plus -1ex \@minus -.2ex}
-%\setaftersecskip{10pt plus 0.5ex}%\onelineskip}
-%\setbeforesubsecskip{8pt plus 0.5ex}%{-3.5ex \@plus -1ex \@minus -.2ex}
-%\setaftersubsecskip{8pt plus 0.5ex}%\onelineskip}
-%\setlength\floatsep{6pt plus 2pt minus 2pt} 
-%\setlength\intextsep{12pt plus 2pt minus 2pt} 
-%\setlength\textfloatsep{12pt plus 2pt minus 2pt} 
+\setbeforesecskip{10pt plus 0.5ex}%{-3.5ex \@plus -1ex \@minus -.2ex}
+\setaftersecskip{10pt plus 0.5ex}%\onelineskip}
+\setbeforesubsecskip{8pt plus 0.5ex}%{-3.5ex \@plus -1ex \@minus -.2ex}
+\setaftersubsecskip{8pt plus 0.5ex}%\onelineskip}
+\setbeforesubsubsecskip{8pt plus 0.5ex}%{-3.5ex \@plus -1ex \@minus -.2ex}
+\setlength\floatsep{6pt plus 2pt minus 2pt} 
+\setlength\intextsep{12pt plus 2pt minus 2pt} 
+\setlength\textfloatsep{12pt plus 2pt minus 2pt} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%  Pakiety i komendy zastosowane tylko do zamieszczenia informacji o użytych komendach i fontach
@@ -124,6 +125,9 @@
 \makeatother
 % do pokazania ramek można byłoby użyć:
 %\usepackage{showframe} 
+
+\usepackage{indentfirst}
+\usepackage{textgreek}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -162,7 +166,7 @@
 %\setlength{\parskip}{0pt}%
 %\setlength{\parsep}{0em} % 
 %\setlength{\itemsep}{0em} % 
-%%\setlength{\listparindent}{1zw} % 
+%\setlength{\listparindent}{1zw} % 
 %}
 %}{
 %\end{list}
@@ -308,20 +312,6 @@
         \renewcommand{\bibname}{Literatura}% 
 }%}
 
-%\AtBeginDocument{% 
-        \addto\captionspolish{% 
-        \renewcommand{\listfigurename}{Spis rysunków}% 
-}%}
-
-%\AtBeginDocument{% 
-        \addto\captionspolish{% 
-        \renewcommand{\listtablename}{Spis tabel}% 
-}%}
-
-%\AtBeginDocument{% 
-        \addto\captionspolish{% 
-\renewcommand\indexname{Indeks rzeczowy}
-}%}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%                  
 %% Definicje stopek i nagłówków
@@ -474,7 +464,7 @@ SPECJALNOŚĆ: & \@specjalnosc\\
 \wydzial{WYDZIAŁ ELEKTRONIKI}
 \kierunek{TELEINFORMATYKA}
 \specjalnosc{PROJEKTOWANIE SIECI TELEINFORMATYCZNYCH}
-\promotor{dr inż. Arkadiusz Grzybowski}
+\promotor{dr inż. Arkadiusz Grzybowski W4/K2}
 \date{WROCŁAW, 2019}
 
 % Ustawienie odstępu od góry w nienumerowanych rozdziałach oraz wykazach:
@@ -543,7 +533,7 @@ SPECJALNOŚĆ: & \@specjalnosc\\
 \include{rozdzial06}
 
 %\bibliographystyle{plalpha}
-\bibliographystyle{plabbrv}
+\bibliographystyle{unsrt}
 
 %UWAGA: bibliotekę referencji należy przygotować samemu. Dobrym do tego narzędziem jest JabRef.
 %       Nazwę przygotowanej biblioteki wpisuje się poniżej bez rozszerzenia 
@@ -553,7 +543,6 @@ SPECJALNOŚĆ: & \@specjalnosc\\
 
 \chapterstyle{noNumbered}
 \phantomsection % sets an anchor
-\addcontentsline{toc}{chapter}{Indeks rzeczowy}
 \printindex
 
 \end{document}
