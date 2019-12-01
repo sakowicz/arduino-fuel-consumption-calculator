@@ -1,8 +1,8 @@
 \chapter{Programowanie i konfiguracja modułu}
-W tym rozdziale opisane zostały programistyczne aspekty projektu takie jak wybór środowiska oraz języka programowania, nazewnictwo zmiennych, wyjaśniona została koncepcja programowania mikrokontrolera Arduino jak i opisane zostały przerwania. W dalszej części rozdziału pokazane zostały konkretne implementacje kodowe obsługi poszczególnych modułów wraz z listingami kodu.
+Aspekty programistyczne takie jak wybór środowiska, języka programowania, nazewnictwo zmiennych, koncepcja programowania Arduino oraz działanie przerwań zostały wyjaśnione poniżej. W kolejnej części rozdziału pokazane zostały konkretne implementacje kodowe obsługi poszczególnych modułów wraz z listingami kodu.
 
-\section{Schemat logiczny}
-Na rys.~\ref{fig:schemat} przedstawiono logiczny schemat działania systemu.
+\section{Schemat ideowy}
+Główna koncepcja programu polega na przetwarzaniu danych wejściowych przez moduł, który wykonuje obliczenia co określoną ilość czasu. Następnym krokiem jest obrobienie oraz wyświetlenie danych. Na rys.~\ref{fig:schemat} przedstawiono ideową koncepcję działania programu w formie schematu.
 
 \begin{figure}[!htb]
 \centering
@@ -13,7 +13,7 @@ Na rys.~\ref{fig:schemat} przedstawiono logiczny schemat działania systemu.
 
 \section{Środowisko programistyczne}
 
-Domyślnym środowiskiem programistycznym (IDE) jakie udostępnia Arduino jest \texttt{Arduino} IDE i to właśnie w nim tworzony oraz kompilowany będzie kod źródłowy mikrokontrolera. Wybór IDE argumentuję tym, iż posiada ono największe wsparcie ze strony producenta modułu oraz społeczności. Nie ma również zbyt wielu alternatyw. Językiem programowania jakie wpiera Arduino jest \texttt{C}, dlatego też został on użyty to zaprogramowania modułu.
+Domyślnym środowiskiem programistycznym (IDE) jakie udostępnia Arduino jest \texttt{Arduino} IDE i to właśnie w nim tworzony oraz kompilowany został kod źródłowy mikrokontrolera. Wybór IDE argumentuję tym, iż posiada ono największe wsparcie ze strony producenta modułu oraz społeczności. Nie ma również zbyt wielu alternatyw. Językiem programowania jakie wpiera Arduino jest \texttt{C}, dlatego też został on użyty do zaprogramowania modułu.
 
 \subsubsection{Przyjęte nazewnictwo podczas pisania kodu}
 W obrębie projektu zostało postanowione, że nazwy zmiennych będą zapisywane w języku polskim. Zwykłe zmienne będą nazywane w konwencji \texttt{snake\_case} a nazwy funkcji w \texttt{camelCase}. Dodatkowo wprowadzono znacznik ---, który oznacza, że w tym miejscu znajduje się jakiś kod, jednak jest on pominięty w listingu, ponieważ nie wnosi nic do aktualnego przykładu.
@@ -41,10 +41,11 @@ Arduino Leonardo posiada 4 ustawienia przerwań \cite{ard_ref}
 
 \subsubsection{Oparte na czasie}
 Oprócz przerwań opartych na stanach cyfrowych pinów potrzebne jest również przerwanie, które wykonuje się co określony czas, aby móc przetworzyć i wyświetlić informację. Arduino w swojej dokumentacji nie posiada informacji na temat takich przerwań, jednak jako, iż oparte jest ono na architekturze AVR, która takie przerwania posiada, zostaną one wykorzystane \cite{atmega_datasheet}.\\
-Zostało założone, że częstotliwość obliczania oraz wyświetlania informacji to 1 sekunda. W tym celu zostanie stworzone przerwanie, które będzie się opierać na dość dokładnym pomiarze czasu, który bazuje na ilości taktów procesora.\\
 
 \section{Implementacja}
 \subsection{Przerwanie timera} \label{setting_timer_interupt}
+
+Zostało założone, że częstotliwość obliczania oraz wyświetlania informacji to 1 sekunda. W tym celu zostanie stworzone przerwanie, które będzie się opierać na dość dokładnym pomiarze czasu, który bazuje na ilości taktów procesora.\\
 
 W poniższym listingu został pokazany kod, który korzysta z Timera 1, który wywołuje przerwanie co 1/4 sekundy. Instrukcje, które zostaną wprowadzone w funkcji \texttt{coSekunde()} będą się wykonywać co dokładnie jedną sekundę.
 
@@ -89,7 +90,7 @@ void setup()
 \subsection{Aktualna prędkość}
 \subsubsection{Konfiguracja przerwania}
 
-W celu obliczenia prędkości zostało wykorzystane przerwanie typu FALLING, aby każdy z sygnałów został zliczony.
+Do obliczenia prędkości zostało wykorzystane przerwanie typu FALLING, aby każdy z sygnałów został zliczony.
 
 Jak zostało przestawione w \ref{vss} sygnał od VSS jest podłączony do pinu 7, który obsługuje przerwanie 4.
 
@@ -133,7 +134,7 @@ void coSekunde()
 \subsection{Aktualne spalanie}
 \subsubsection{Konfiguracja przerwania}
 
-W celu obliczenia aktualnego spalania zostało wykorzystane przerwanie typu \texttt{CHANGE}. W ten gdy pin zmieni swój stan zostanie mierzony czas otwarcia wtrysku w mikrosekundach
+Do obliczenia aktualnego spalania zostało wykorzystane przerwanie typu \texttt{CHANGE}. W ten sposób gdy pin zmieni swój stan zostanie mierzony czas otwarcia wtrysku w mikrosekundach
 
 Jak zostało przestawione w \ref{inj} sygnał od wtrysku jest podłączony do pinu 2, który obsługuje przerwanie 1.
 
@@ -171,7 +172,7 @@ void setup()
 
 \subsubsection{Obliczenia}
 
-W celu wyliczenia aktualnego spalanie zostały zastosowane obliczenia z \ref{calc_consumption}, funkcja \texttt{coSekunde()} z \ref{setting_timer_interupt} oraz wyliczona już prędkość z poprzedniego podrozdziału \ref{code_speed}.
+Do wyliczenia aktualnego spalanie zostały zastosowane obliczenia z \ref{calc_consumption}, funkcja \texttt{coSekunde()} z \ref{setting_timer_interupt} oraz obliczona już prędkość z poprzedniego podrozdziału \ref{code_speed}.
 
 \begin{lstlisting}[label=list:vss_int,caption=Obliczanie aktualnego spalania,
 basicstyle=\footnotesize\ttfamily]
@@ -198,7 +199,7 @@ void coGodzine()
 
 \subsection{Położenie pedału gazu}
 
-Jako, że sygnał położenia pedału gazu działa niczym potencjometr, do obliczenia jego procentowej wartości została użyta funkcja \texttt{analogRead}, która ma rozdzielczość 10 bit i zwraca liczbę całkowitą z przedziału 0-1023 w zależności od odczytu na wejściu \cite{ard_ref}.
+Sygnał położenia pedału gazu działa niczym potencjometr. Do obliczenia jego procentowej wartości została użyta funkcja \texttt{analogRead}, która ma rozdzielczość 10 bit i zwraca liczbę całkowitą z przedziału 0-1023 w zależności od odczytu na wejściu \cite{ard_ref}.
 
 \begin{lstlisting}[label=list:code_thr,caption=Obliczanie procentowego nacisku na pedał gazu,
 basicstyle=\footnotesize\ttfamily]
@@ -220,9 +221,9 @@ float aktualnyNacisk()
 \end{lstlisting}
 
 
-\subsection{Odczyt woltomierza}
+\subsection{Odczyt woltomierza} \label{voltometer_code}
 
-Jak zostało wspomniane w założeniach, aplikacja ma również informować użytkownika o aktualnym napięciu w układzie samochodu. W tym celu zostały użyte dwa rezystory (\ref{voltometer}).
+Aplikacja ma również informować użytkownika o aktualnym napięciu w układzie samochodu. W tym celu zostały użyte dwa rezystory (\ref{voltometer}).
 
 \begin{lstlisting}[label=list:code_thr,caption=Obliczanie aktualnego napięcia,
 basicstyle=\footnotesize\ttfamily]
@@ -230,7 +231,7 @@ basicstyle=\footnotesize\ttfamily]
 const voltometer_pin = 1;
 
 float R1 = 100000.0; // Opór rezystora R1
-float R2 = 10000.0; // yOpór rezystora R2
+float R2 = 10000.0; // Opór rezystora R2
 
 ---
 float woltomierz()
@@ -255,7 +256,7 @@ float woltomierz()
 
 \subsubsection{Ustawianie trybu podciągającego}
 
-W celu poprawnego działania mikro przełącznika należy użyć rezystora podciągającego, żeby uniknąć przypadków, że na wejściu będzie panował stan nieznany. Arduino Leonardo umożliwia ustawienie pinu w tryb \texttt{PULLUP}, dzięki czemu nie potrzeba dokładać kolejnego rezystora. 
+Poprawne działanie mikro przełącznika zostało zapewnione dzięki wbudowanemu w Arduino rezystorowi podciągającemu, dzięki któremu nie będzie przypadków, iż na wejściu będzie panował stan nieznany. Arduino Leonardo umożliwia ustawienie pinu w tryb \texttt{PULLUP}, dzięki czemu nie potrzeba dokładać kolejnego rezystora. 
 \begin{lstlisting}[label=list:code_pullup,caption=Ustawianie pinu switcha w tryb PULLUP,
 basicstyle=\footnotesize\ttfamily]
 
@@ -270,9 +271,9 @@ void setup()
 \end{lstlisting}
 
 \subsubsection{Drgania mikro przełącznika}
-Większość mikro przełączników mechanicznych posiada problem z drganiami styków. W przypadku, gdy przycisk zostaje wciśnięty lub puszczony jego styki potrafią drgać powodując zmianę stanu wejściowego na pinie. W celu zabezpieczenia się przed tym została napisana funkcja, która po zmianie stanu na wejściu czeka określoną ilość czasu i sprawdza raz jeszcze stan przycisku w celu uniknięcia błędnego wykonywania kodu. Dla tego typu mikro przełączników przyjęło się, iż ten okres czasu wynosi 20 \mu s.\\
+Większość mikro przełączników mechanicznych posiada problem z drganiami styków. W przypadku, gdy przycisk zostaje wciśnięty lub puszczony jego styki potrafią drgać powodując zmianę stanu wejściowego na pinie. W celu zabezpieczenia się przed tym została napisana funkcja, która po zmianie stanu na wejściu czeka określoną ilość czasu i sprawdza raz jeszcze stan przycisku, aby uniknąć błędów. Dla tego typu mikro przełączników przyjęło się, iż ten okres czasu wynosi 20 $\mathrm{\mu s}$.\\
 
-W celu polepszenia interakcji użytkowników z mikro kontrolerem zostały wprowadzone dwa tryby klikania w switch: zwykłe kliknięcie oraz przytrzymanie (min. 1 sekundę).
+Zaimplementowano dwa tryby klikania w mikro przełącznik, aby polepszyć możliwości interakcji z użytkownikiem, są to: zwykłe kliknięcie oraz przytrzymanie (min. 1 sekundę).
 
 \begin{lstlisting}[label=list:code_switch,caption=Obsługa mikroprzełacznika,
 basicstyle=\footnotesize\ttfamily]
@@ -344,7 +345,7 @@ void mirkroPrzelacznik()
 
 \subsection{Wyświetlacz LCD}
 
-Jako iż wyświetlacz jest zgodny ze sterownikiem HD44780 została użyta biblioteka \texttt{LiquidCrystal.h} \cite{lib_lcd}, która umożliwia łatwą komunikację z tym LCD.
+Ze względu na to, iż wyświetlacz jest zgodny ze sterownikiem HD44780 została użyta biblioteka \texttt{LiquidCrystal.h} \cite{lib_lcd}, która umożliwia łatwą komunikację z kontrolerem sterującym wyświetlaczem.
 
 \begin{lstlisting}[label=list:lcd_setup,caption=Inicjalizacja wyświetlacza,
 basicstyle=\footnotesize\ttfamily]
@@ -359,9 +360,9 @@ void setup()
 ---
 \end{lstlisting}
 
-\subsection{Czujnik temperatury}
+\subsection{Czujnik temperatury} \label{one_wire_temp}
 
-W celu skorzystania z cyfrowego czujnika temperatury działającego na interfejsie 1-Wire zostały dołączone dwie biblioteki: \texttt{DallasTemperature.h} \cite{lib_dallas}, która odpowiada za odczyt i konfiguracje czujnika oraz \texttt{OneWire.h} \cite{lib_onewire}, dzięki której można korzystać z interfejsu 1-Wire.
+Wsparcie dla cyfrowego czujnika temperatury działającego na interfejsie 1-Wire zostało zapewnione dołączając dwie biblioteki: \texttt{DallasTemperature.h} \cite{lib_dallas}, która odpowiada za odczyt i konfiguracje czujnika oraz \texttt{OneWire.h} \cite{lib_onewire}, dzięki której można korzystać z interfejsu 1-Wire.
 
 \begin{lstlisting}[label=list:d18s20_setup,caption=Inicjalizacja czujnika i odczyt temperatury,
 basicstyle=\footnotesize\ttfamily]
@@ -432,4 +433,4 @@ Zostało założone, iż ilość spalonego paliwa jest zapisywana od zerowej kom
 
 \subsubsection{Ograniczenia i optymalizacja}
 
-Jak zostało wspomniane wcześniej ilość zapisów do tej pamięci jest ograniczona. W celu wydłużenia jej żywotności została wprowadzona optymalizacja zapisu do pamięci. Zapis aktualnych danych jest wykonywany tylko, gdy samochód stoi (czyli prędkość pojazdu jest mniejsza niż 2 km/h) oraz gdy dystans od poprzedniego zapisu jest większy niż kilometr. Takie podejście znacznie zredukowało liczbę zapisów.
+Ilość zapisów do pamięci EEPROM jest ograniczona. W celu wydłużenia jej żywotności została wprowadzona optymalizacja zapisu do pamięci. Zapis aktualnych danych jest wykonywany tylko, gdy samochód stoi (czyli prędkość pojazdu jest mniejsza niż 2 km/h) oraz gdy dystans od poprzedniego zapisu jest większy niż kilometr. Takie podejście znacznie zredukowało liczbę zapisów.

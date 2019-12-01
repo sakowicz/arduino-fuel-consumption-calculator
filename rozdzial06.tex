@@ -1,13 +1,13 @@
 \chapter{Podsumowanie}
-\section{Wykonane prace}
-Podsumowując, w ramach tej pracy została stworzona implementacja mikrokontrolera, który oblicza i wyświetla informacje o aktualnym stanie pojazdu, tj. informacje na temat spalania, prędkości, temperatury, napięciu w układzie samochodu oraz aktualnego położenia pedału gazu. Dodatkowo dane dotyczące spalania oraz przejechanego dystansu zapisywane są w pamięci nieulotnej. Ze względu na swoją uniwersalność projekt ten można zastosować do pojazdów różnych marek.
-\section{Możliwości rozbudowy}
-Jako, iż projekt jest oparty o platformę Arduino można go dalej rozbudowywać rozbudować. Niektórymi z możliwości dalszej rozbudowy są:
+\subsubsection{Wykonane prace}
+W ramach pracy został opracowany moduł na bazie mikrokontrolera Ardiuno, który oblicza i wyświetla informacje o aktualnym stanie pojazdu, tj. dane na temat spalania, prędkości, temperatury, napięciu w układzie samochodu oraz aktualnego położenia pedału gazu. Dodatkowo dane dotyczące spalania oraz przejechanego dystansu zapisywane są w pamięci nieulotnej. Ze względu na swoją uniwersalność projekt ten można zastosować do pojazdów różnych marek.
+\subsubsection{Możliwości rozbudowy}
+Ze względu na to iż, projekt jest oparty o platformę Arduino można go dalej rozbudowywać.  Kierunki dalszych prac to:
 \begin{itemize}
 \item dodanie modułu bezprzewodowego (Bluetooth/ Wi-Fi) do synchronizacji danych,
 \item dodanie modułu GPS do zapisu tras,
 \item dodanie modułu GSM, który w połączeniu z systemem GPS mógłby służyć jako system antykradzieżowy do lokalizacji pojazdu,
 \item zastosowanie magistrali I2C, aby zredukować ilość zajętych pinów i komunikować się po niej z zewnętrznymi modułami (LCD, GSM, GPS itp.)
-\item jako, iż aktualne informacje o położeniu pedału gazu nie są potrzebne do żadnych obliczeń, są tylko wyświetlane na ekranie, można wykorzystać je do zaawansowanych statystyk na temat spalania oraz skonstruować funkcjonalność, która pomagałaby redukować spalanie poprzez informacje jakie położenie pedału gazu w danym momencie jest najbardziej optymalne.
-\item można podłączyć czujniki zbliżeniowe, które służyłyby jako czujniki parkowania, moduł mógłby wtedy graficznie informować o przeszkodach wokół samochodu.
+\item znalezienie zastosowania dla czujnika położenia gazu. Aktualnie dane o jego położeniu nie są potrzebne do żadnych obliczeń, są tylko wyświetlane na ekranie. Można wykorzystać je do zaawansowanych statystyk na temat spalania oraz skonstruować funkcjonalność, która pomagałaby redukować spalanie poprzez udzielanie informacji jakie położenie pedału gazu w danym momencie jest najbardziej optymalne.
+\item dodanie czujników zbliżeniowych, które służyłyby jako czujniki parkowania, moduł mógłby graficznie informować o przeszkodach wokół samochodu.
 \end{itemize}

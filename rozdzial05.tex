@@ -1,5 +1,5 @@
 \chapter{Interfejs użytkownika}
-\par W tym została wyjaśniona kwestia komunikacji z użytkownikiem końcowym za pomocą interfejsu. Znajdują się tutaj informację na temat wyświetlania danych na ekranie, zachowania programu w określonych sytuacjach oraz sterowania mikrokontrolerem przez użytkownika.
+\par Kwestia interfejsu oraz komunikacji z użytkownikiem końcowym za pomocą interfejsu została omówiona poniżej. Znajdują się tutaj informację na temat wyświetlania danych na ekranie, zachowania programu w określonych sytuacjach oraz sterowania mikrokontrolerem przez użytkownika.
 \section{Wygląd i obsługa}
 
 \par Główny interfejs został podzielony na 3 karty menu, które są wybieralne przełącznikiem. Dodatkowo, w przypadku, gdy pojazd zatrzymał się, karta zmienia się automatycznie na alternatywną czwartą kartę, która pokazuje statystyki z przejazdu. Kolejną funkcjonalnością jest przytrzymanie przełącznika, które w zależności od aktualnej karty albo resetuje zapisane dane w pamięci, albo wyłącza podświetlenie ekranu.
@@ -26,7 +26,7 @@ Na drugiej karcie znalazły się informacje na temat przejechanego dystansu oraz
 \end{figure}
 
 \subsubsection{Trzecia karta}
-Na trzeciej karcie znajdują się informacje na temat spalania: spalanie na 100 km, spalanie na godzinę oraz średnie spalanie na 100 km.Podgląd tej można zobaczyć na rysunku (rys.~\ref{fig:menu3}).
+Na trzeciej karcie znajdują się informacje na temat spalania: spalanie na 100 km, spalanie na godzinę oraz średnie spalanie na 100 km. Podgląd tej można zobaczyć na rysunku (rys.~\ref{fig:menu3}).
 
 \begin{figure}[!htb]
 \centering
@@ -37,7 +37,7 @@ Na trzeciej karcie znajdują się informacje na temat spalania: spalanie na 100 
 
 
 \subsubsection{Karta przy postoju}
-Na tej karcie znalazły się informacje na temat średniego spalania, spalonego paliwa, aktualnego spalania na godzinę oraz przejechanego dystansu. Podgląd tej można zobaczyć na rysunku (rys.~\ref{fig:menu0}).
+Karta postojowa zawiera informacje na temat średniego spalania, spalonego paliwa, aktualnego spalania na godzinę oraz przejechanego dystansu. Podgląd tej można zobaczyć na rysunku (rys.~\ref{fig:menu0}).
 
 \begin{figure}[!htb]
 \centering
@@ -118,7 +118,7 @@ void loop()
 
 \end{lstlisting}
 
-Jako, iż temperatura nie zmienia się tak szybko, a jej odczyt trwa chwilę czasu zostało postanowione, że będzie ona pobierana co 60 sekund oraz 2,5 sekundy po starcie programu.
+Temperatura nie zmienia się szybko, a jej odczyt trwa trochę czasu zostało postanowione, że będzie ona pobierana co 60 sekund oraz 2,5 sekundy po starcie programu.
 \begin{lstlisting}[label=list:temp_refresh_rate,caption=Implementacja odświeżania temperatury,
 basicstyle=\footnotesize\ttfamily]
 const czas_odswiezania_temperatury = 60000;
